@@ -18,6 +18,8 @@ jobs:
   create-release:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
       # set the verion to the input. if the input is not set (triggered by tag), it will be the tag name
       - run: echo "VERSION=${{ inputs.version || github.ref_name }}" >> $GITHUB_ENV
 
