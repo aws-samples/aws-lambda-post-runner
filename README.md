@@ -39,6 +39,9 @@ If you are using a custom Lambda runtime (for rust, golang, c++, etc) or contain
   - If not set, the default value is `AfterResponse,AfterError`.
 - `AWS_LAMBDA_POST_RUNNER_LOG_LEVEL`
   - The log level. Set to `debug` to print debug logs.
+- `AWS_LAMBDA_POST_RUNNER_SHELL`
+  - The shell used to execute the command.
+  - Default is `/bin/bash`.
 
 ## FAQ
 

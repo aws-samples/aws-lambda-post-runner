@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.1.3
+
+- Feat: add `AWS_LAMBDA_POST_RUNNER_SHELL` to control the shell used to execute the command.
+
 ## v0.1.2
 
 - Feat: add `AWS_LAMBDA_POST_RUNNER_LOG_LEVEL` to control the log level.

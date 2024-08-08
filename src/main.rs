@@ -16,6 +16,9 @@ async fn main() {
     .expect("No command found for aws-lambda-post-runner");
   debug!("got AWS_LAMBDA_POST_RUNNER_COMMAND: {}", cmd);
 
+  let shell = std::env::var("AWS_LAMBDA_POST_RUNNER_SHELL").unwrap_or("/bin/bash".to_string());
+  debug!("got AWS_LAMBDA_POST_RUNNER_SHELL: {}", shell);
+
   let mode = std::env::var("AWS_LAMBDA_POST_RUNNER_MODE")
     .map(|mode| {
       debug!("got AWS_LAMBDA_POST_RUNNER_MODE: {}", mode);
@@ -38,6 +41,7 @@ async fn main() {
     .server
     .serve(move |req| {
       let cmd = cmd.clone();
+      let shell = shell.clone();
 
       async move {
         let path = req.uri().path();
@@ -57,7 +61,7 @@ async fn main() {
           debug!("executing AWS_LAMBDA_POST_RUNNER_COMMAND: {}", cmd);
 
           // before proceed, run the command
-          Command::new("/bin/bash")
+          Command::new(shell)
             .arg("-c")
             .arg(&cmd)
             .spawn()
