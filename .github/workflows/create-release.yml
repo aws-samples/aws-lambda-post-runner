@@ -20,10 +20,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # set the verion to the input. if the input is not set (triggered by tag), it will be the tag name
+      # set the version to the input. if the input is not set (triggered by tag), it will be the tag name
       - run: echo "VERSION=${{ inputs.version || github.ref_name }}" >> $GITHUB_ENV
 
-      # create the release
-      - run: gh release create ${{ env.VERSION }} -t ${{ env.VERSION }} --verify-tag -n "See [CHANGELOG.md](https://github.com/aws-samples/aws-lambda-post-runner/blob/main/CHANGELOG.md)."
+      # create the release with error handling
+      - name: Create release
+        run: |
+          if gh release view ${{ env.VERSION }} >/dev/null 2>&1; then
+            echo "Release ${{ env.VERSION }} already exists, skipping creation"
+          else
+            gh release create ${{ env.VERSION }} -t ${{ env.VERSION }} --verify-tag -n "See [CHANGELOG.md](https://github.com/aws-samples/aws-lambda-post-runner/blob/main/CHANGELOG.md)." || {
+              echo "Failed to create release for ${{ env.VERSION }}"
+              exit 1
+            }
+          fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
