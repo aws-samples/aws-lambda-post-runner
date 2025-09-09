@@ -11,6 +11,7 @@ on:
 permissions:
   contents: write
 
+# VERSION env var declared to prevent workflow linting errors when referenced in steps
 env:
   VERSION: ""
 
